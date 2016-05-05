@@ -10,7 +10,7 @@ bool isPrime(ll n){
 	return true;
 }
 
-//[0,n]まで素数表を返す
+//[0,n]までの素数表を返す
 vector<bool> makePrimeTable(int n){
     //エラトステネスの篩を用いて素数表を作成    
     //era[i] iが素数ならtrue
@@ -22,10 +22,10 @@ vector<bool> makePrimeTable(int n){
 
 	for (int i = 2; i <= n; i++){
 		if (era[i]){
-            for (int j = i * 2; j <= n; j += i){
-			    era[j] = 0;
-            }
-        }
+	            for (int j = i * 2; j <= n; j += i){
+				    era[j] = 0;
+	            }
+	        }
 	}
 }
 

@@ -16,16 +16,16 @@
 //基本 (フィボナッチ数列の導出)
 /*
 フィボナッチ数列は、以下のような漸化式で表される数列です
-
-  F(0) = 0
+  F(0) = 1
   F(1) = 1
-  F(i) = F(i - 1)+F(i - 2) (i >= 2)
-
+  F(i) = F(i-1) + F(i-2) (i >= 2)
 */
 
 //i番目のフィボナッチ数を求める
 int F(int i){
-  if(i == 0)return 0; //i == 0なら定義から0を返す
+  if(i == 0)return 1; //i == 0なら定義から1を返す
   if(i == 1)return 1; //i == 1なら定義から1を返す
   return F(i - 1) + F(i - 2); //定義からF(i - 1) + F(i - 2)を返す
 }
+
+//例題　http://judge.u-aizu.ac.jp/onlinejudge/commentary.jsp?id=ALDS1_10_A　(注 上のコードだとTLEするので解説を見よう)

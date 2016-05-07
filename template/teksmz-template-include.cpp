@@ -8,6 +8,7 @@
 
 #define rep(i, j) for(int i = 0; i < j; i++)
 #define all(i) i.begin(), i.end()
+#define ll long long
 
 using namespace std;
 

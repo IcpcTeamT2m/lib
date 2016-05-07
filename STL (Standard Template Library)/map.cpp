@@ -5,8 +5,8 @@
 
 #include <map>
 
-typedef map(型, 型) name;
-typedef map(string, int) name; //keyがstring型、値がint型
+map(型, 型) name;
+map(string, int) name; //keyがstring型、値がint型
 
 
 //例

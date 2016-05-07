@@ -5,8 +5,8 @@
 
 #include <map>
 
-map(型, 型) name;
-map(string, int) name; //keyがstring型、値がint型
+map<型, 型> name;
+map<string, int> name; //keyがstring型、値がint型
 
 
 //例

@@ -1,0 +1,10 @@
+[Œ^•ÏŠ·(int < == > string)]
+
+stirngstream sin;
+sin << s;
+
+‚Æ
+
+stringstream sin(s)
+
+‚Í“¯‚¶ˆÓ–¡B

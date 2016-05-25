@@ -5,21 +5,21 @@
 #include<string>
 #include<sstream>
 #include<stack>
+#include<queue>
 #include<algorithm>
-#include<math>
 
 using namespace std;
 
-//Œ^•ÏŠ·(int < == > string)
+//å‹å¤‰æ›(int < == > string)
 //------------------------------------------
 
-//stringŒ^‚ğintŒ^‚É
-int StrtoInt(string s) { int v; stringstream StringIn(s); StirngIn >> v; return v; }
+//stringå‹ã‚’intå‹ã«
+int StrtoInt(string s) { int v; stringstream StringIn(s); StringIn >> v; return v; }
 
-// ”’l‚ğ‚ğstringŒ^‚É
+// æ•°å€¤ã‚’ã‚’stringå‹ã«
 template<class T> string toString(T x) { stringstream StringOut; StringOut << x; return StringOut.str(); }
 
-//Œ^’è‹`
+//å‹å®šç¾©
 //------------------------------------------
 typedef vector<int> VI;
 typedef vector<string> VS;
@@ -36,12 +36,12 @@ typedef pair<int, int> PII;
 #define EXIST(s,e) ((s).find(e)!=(s).end())
 #define SORT(c) sort((c).begin(),(c).end())
 
-//ŒJ‚è•Ô‚µ
+//ç¹°ã‚Šè¿”ã—
 //------------------------------------------
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
 #define REP(i,n)  FOR(i,0,n)
 
-//’è”
+//å®šæ•°
 //--------------------------------------------
 const double EPS = 1e-10;
 const double PI = acos(-1.0);

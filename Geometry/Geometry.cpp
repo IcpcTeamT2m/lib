@@ -34,29 +34,30 @@ bool operator < (const P& a, const P& b) {
 	return a.X != b.X ? a.X < b.X : a.Y < b.Y;
 }
 
-//外積 cross(a,b) = |a||b|sinθ
-double cross(P a, P b) {
+//外積 cs(a,b) = cross(a,b) = |a||b|sinθ
+D cs(P a, P b) {
 	return (conj(a) * b).Y;
 }
-//内積 dot(a,b) = |a||b|cosθ
-double dot(P a, P b) {
+//内積 dt(a,b) = dot(a,b) = |a||b|cosθ
+D dt(P a, P b) {
 	return (conj(a) * b).X;
 }
 //点間のユークリッド距離
-double dist(P a, P b) {
+D dist(P a, P b) {
 	return sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
 }
 //線分(a,b)上にcが存在するか isPointOnLine
 bool isPOL(P a, P b, P c) {
 	return abs(a - c) + abs(c - b) < abs(a - b) + EPS;
 }
-//線分と線分の交点取得
-P crosspointLL(P a1, P a2, P b1, P b2) {
-	D d1 = cross(b2 - b1, b1 - a1);
-	D d2 = cross(b2 - b1, a2 - a1);
+//線分と線分の交点取得 CrossPointSegmentSegment
+P cpSS(P a1, P a2, P b1, P b2) {
+	D d1 = cs(b2 - b1, b1 - a1);
+	D d2 = cs(b2 - b1, a2 - a1);
 	if (EQ(d2, 0)) {
 		return EX; //平行
 	}
+	//交点計算
 	P ret = a1 + d1 / d2 * (a2 - a1);
 	if (isPOL(b1, b2, ret) &&
 		isPOL(a1, a2, ret)) {

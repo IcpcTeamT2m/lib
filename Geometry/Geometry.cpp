@@ -59,8 +59,7 @@ P cpSS(P a1, P a2, P b1, P b2) {
 	}
 	//交点計算
 	P ret = a1 + d1 / d2 * (a2 - a1);
-	if (isPOL(b1, b2, ret) &&
-		isPOL(a1, a2, ret)) {
+	if (isPOL(b1, b2, ret) && isPOL(a1, a2, ret)) {
 		return ret;
 	}
 	else {

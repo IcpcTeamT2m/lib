@@ -9,7 +9,7 @@ using namespace std;
 
 //幾何
 #include <complex>
-typedef double D;		//座標値の型
+typedef double D;	//座標値の型
 typedef complex<D> P;	//Point
 typedef pair<P, P> L;	//Line
 
@@ -23,7 +23,7 @@ const D INF = 1e12;
 //許容誤差を考慮した判定処理
 #define LE(n,m) ((n) < (m) + EPS)	// n < m
 #define GE(n,m) ((n) + EPS > (m))	// n > m
-#define EQ(n,m) (abs((n)-(m)) < EPS)// n == m
+#define EQ(n,m) (abs((n)-(m)) < EPS)	// n == m
 
 #define S first  //始点
 #define T second //終点

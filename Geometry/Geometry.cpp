@@ -6,7 +6,6 @@
 using namespace std;
 
 #define rep(i,n)	for(int i = 0;i < n;i++)
-#define clr(n)		memset(n, 0, sizeof(n))
 
 //幾何
 #include <complex>

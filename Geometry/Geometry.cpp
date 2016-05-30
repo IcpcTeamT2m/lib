@@ -7,6 +7,7 @@
 using namespace std;
 
 #define rep(i,n)	for(int i = 0;i < n;i++)
+#define all(n)	n.begin(),n.end()
 
 //幾何
 #include <complex>
@@ -99,29 +100,29 @@ P cpSS(P a1, P a2, P b1, P b2) {
 
 /* ユークリッド距離 */
 
-//点と点の距離
+//点と点の距離 distPointPoint
 D distPP(P a, P b) {
 	return abs(a - b);
 }
-//直線と点の距離
+//直線と点の距離 distLintPoint
 D distLP(P a1, P a2, P p) {
 	return abs(proj(a1, a2, p) - p);
 }
-//線分と点の距離
+//線分と点の距離 distSegmentPoint
 D distSP(P a1, P a2, P p) {
 	P r = proj(a1, a2, p);
 	if (cpSP(a1, a2, r) != EX) return abs(r - p);
 	return min(abs(a1 - p), abs(a2 - p));
 }
-//直線と直線の距離
+//直線と直線の距離 distLineLine
 D distLL(P a1, P a2, P b1, P b2) {
 	return cpLL(a1, a2, b1, b2) != EX ? 0 : distLP(a1, a2, b1);
 }
-//直線と線分の距離
+//直線と線分の距離 distLineSegment
 D distLS(P a1, P a2, P b1, P b2) {
 	return cpLS(a1, a2, b1, b2) != EX ? 0 : min(distLP(a1, a2, b1), distLP(a1, a2, b2));
 }
-//線分と線分の距離
+//線分と線分の距離 distSegmentSegment
 D distSS(P a1, P a2, P b1, P b2) {
 	if (cpSS(a1, a2, b1, b2) != EX) return 0;
 	return min(min(distSP(a1, a2, b1), distSP(a1, a2, b2)),
@@ -130,23 +131,23 @@ D distSS(P a1, P a2, P b1, P b2) {
 
 /* 円 */
 
-//直線と円の距離
+//直線と円の距離 distLineCircle
 D distLC(P a1, P a2, P c, D r) {
 	return max(distLP(a1, a2, c) - r, 0.0);
 }
-//線分と円の距離
+//線分と円の距離 distSegmentCircle
 D distSC(P a1, P a2, P c, D r) {
 	D d1 = norm(c - a1), d2 = norm(c - a2);
 	if (d1 < r * r ^ d2 < r * r)return 0; //円が線分を内包するとき距離0ならorに変える
 	if (d1 < r * r & d2 < r * r)return r - sqrt(max(d1, d2));
 	return max(distSP(a1, a2, c) - r, 0.0);
 }
-//円と円の距離
+//円と円の距離 distCircleCircle
 D distCC(P a, D ar, P b, D br) {
 	D d = abs(a - b);
 	return GE(d, abs(ar - br)) ? max(d - ar - br, 0.0) : abs(ar - br) - d;
 }
-//直線と円の交点
+//直線と円の交点 crosspointLineCircle
 VP cpLC(P a1, P a2, P c, D r) {
 	VP vp;
 	P f = proj(a1, a2, c);
@@ -156,7 +157,7 @@ VP cpLC(P a1, P a2, P c, D r) {
 	if (!EQ(r*r, norm(f - c)))vp.push_back(f - d);
 	return vp;
 }
-// 円と円の交点
+// 円と円の交点 crosspointCircleCircle
 VP cpCC(P a, D ar, P b, D br) {
 	VP ps;
 	P c = b - a;
@@ -221,15 +222,15 @@ VP cpr(P a, P b, D r) {
 	return cs;
 }
 
-// 点aと点bを通り、直線lに接する円の中心
+// 点aと点bを通り、直線lに接する円の中心 circlesPointsTangent
 VP cpt(P a, P b, P l1, P l2) {
 	P n = (l2 - l1) * P(0, 1);
 	P m = (b - a) * P(0, 0.5);
 	D c = dt((a + b)*0.5 - l1, n),
-	qa = norm(n)*norm(m) - dt(n, m)*dt(n, m),
-	qb = -c * dt(n, m),
-	qc = norm(n)*norm(m) - c*c,
-	qd = qb*qb - qa*qc;  // qa*k^2 + 2*qb*k + qc = 0
+		qa = norm(n)*norm(m) - dt(n, m)*dt(n, m),
+		qb = -c * dt(n, m),
+		qc = norm(n)*norm(m) - c*c,
+		qd = qb*qb - qa*qc;  // qa*k^2 + 2*qb*k + qc = 0
 	VP cs;
 	if (qd < -EPS) return cs;
 	if (EQ(qa, 0)) {
@@ -242,7 +243,7 @@ VP cpt(P a, P b, P l1, P l2) {
 	return cs;
 }
 
-// 点集合を含む最小の円の中心
+// 点集合を含む最小の円の中心 minEnclosingCircle
 P mec(const VP& ps) {
 	P c;
 	double m = 0.5;
@@ -268,6 +269,7 @@ bool operator < (const P& a, const P& b) {
 	return a.X != b.X ? a.X < b.X : a.Y < b.Y;
 }
 
+//凸包 convexHull
 VP cvh(VP ps) { // 元の点集合がソートされていいならVP&に
 	int n = ps.size(), k = 0;
 	sort(ps.begin(), ps.end());
@@ -278,5 +280,240 @@ VP cvh(VP ps) { // 元の点集合がソートされていいならVP&に
 		while (k >= t && ccw(ch[k - 2], ch[k - 1], ps[i]) <= 0) --k;
 	ch.resize(k - 1);
 	return ch;
-
 }
+
+// 凸判定。縮退を認めないならccwの判定部分を != 1 とする isCcwConvex
+bool iscv(const VP& ps) {
+	int n = ps.size();
+	rep(i, n) if (ccw(ps[i], ps[(i + 1) % n], ps[(i + 2) % n]) == -1) return false;
+	return true;
+}
+
+// 凸多角形の内部判定　O(n) inConvex
+// 点が領域内部なら1、境界上なら2、外部なら0を返す
+int incv(P p, const VP& ps) {
+	int n = ps.size();
+	int dir = ccw(ps[0], ps[1], p);
+	rep(i, n) {
+		int ccwc = ccw(ps[i], ps[(i + 1) % n], p);
+		if (!ccwc) return 2;  // 線分上に存在
+		if (ccwc != dir) return 0;
+	}
+	return 1;
+}
+
+// 凸多角形の内部判定　O(logn) inCcwConvex
+// 点が領域内部なら1、境界上なら2、外部なら0を返す
+int incv(const VP& ps, P p) {
+	int n = ps.size();
+	P g = (ps[0] + ps[n / 3] + ps[n * 2 / 3]) / 3.0;
+	if (g == p) return 1;
+	P gp = p - g;
+
+	int l = 0, r = n;
+	while (l + 1 < r) {
+		int m = (l + r) / 2;
+		P gl = ps[l] - g;
+		P gm = ps[m] - g;
+		if (cs(gl, gm) > 0) {
+			if (cs(gl, gp) >= 0 && cs(gm, gp) <= 0) r = m;
+			else l = m;
+		}
+		else {
+			if (cs(gl, gp) <= 0 && cs(gm, gp) >= 0) l = m;
+			else r = m;
+		}
+	}
+	r %= n;
+	D cr = cs(ps[l] - p, ps[r] - p);
+	return EQ(cr, 0) ? 2 : cr < 0 ? 0 : 1;
+}
+
+// 多角形の内部判定 inPolygon
+// 点が領域内部なら1、境界上なら2、外部なら0を返す
+int inpg(const VP& ps, P p) {
+	int n = ps.size();
+	int in = 0;
+	rep(i, n) {
+		P a = ps[i] - p;
+		P b = ps[(i + 1) % n] - p;
+		if (EQ(cs(a, b), 0) && LE(dt(a, b), 0)) return 2;
+		if (a.Y > b.Y) swap(a, b);
+		if ((a.Y*b.Y < 0 || (a.Y*b.Y < EPS && b.Y > EPS)) && LE(cs(a, b), 0)) in = !in;
+	}
+	return in;
+}
+
+// 凸多角形クリッピング convexCut
+VP cvcut(const VP& ps, P a, P b) {
+	int n = ps.size();
+	VP r;
+	rep(i, n) {
+		int cc = ccw(a, b, ps[i]);
+		if (cc != -1) r.push_back(ps[i]);
+		int cn = ccw(a, b, ps[(i + 1) % n]);
+		if (cc * cn == -1) r.push_back(cpLL(a, b, ps[i], ps[(i + 1) % n]));
+	}
+	return r;
+}
+
+// 凸多角形の直径（最遠点対）convexDiameter
+pair<int, int> cvdm(const VP& ps) {
+	int n = ps.size();
+	int i = min_element(all(ps)) - ps.begin();
+	int j = max_element(all(ps)) - ps.begin();
+	int mi, mj;
+	D md = 0;
+	rep(k, 2 * n) {
+		if (md < norm(ps[i] - ps[j])) {
+			md = norm(ps[i] - ps[j]);
+			mi = i;
+			mj = j;
+		}
+		if (cs(ps[i] - ps[(i + 1) % n], ps[(j + 1) % n] - ps[j]) <= 0) j = (j + 1) % n;
+		else i = (i + 1) % n;
+	}
+	return make_pair(mi, mj);
+}
+
+// 多角形の符号付面積
+D area(const VP& ps) {
+	D a = 0;
+	rep(i, ps.size()) a += cs(ps[i], ps[(i + 1) % ps.size()]);
+	return a / 2;
+}
+
+// 多角形の幾何学的重心 centroid
+P ctd(const VP& ps) {
+	int n = ps.size();
+	D s = 0;
+	P c;
+	rep(i, n) {
+		D a = cs(ps[i], ps[(i + 1) % n]);
+		s += a;
+		c += (ps[i] + ps[(i + 1) % n]) * a;
+	}
+	return 1 / s / 3 * c;
+}
+
+// ボロノイ領域 voronoiCell
+VP vrc(P p, const VP& ps, const VP& o) {
+	VP cl = o;
+	rep(i, ps.size()) {
+		if (EQ(norm(ps[i] - p), 0)) continue;
+		P h = (p + ps[i])*0.5;
+		cl = cvcut(cl, h, h + (ps[i] - h)*P(0, 1));
+	}
+	return cl;
+}
+
+/* 幾何グラフ */
+
+struct Edge {
+	int f, t;
+	D c;
+	Edge(int from, int to, D cost) : f(from), t(to), c(cost) {}
+};
+struct Graph {
+	int n;
+	vector<vector<Edge>> E;
+	Graph(int n) : n(n), E(n) {}
+	void addEdge(Edge e) {
+		E[e.f].push_back(e);
+		E[e.t].push_back(Edge(e.t, e.f, e.c));
+	}
+};
+
+// 線分アレンジメント（線分の位置関係からグラフを作成）segmentArrangement
+Graph sar(const vector<L>& segs, VP& ps) {
+	int n = segs.size();
+	rep(i, n) {
+		ps.push_back(segs[i].first);
+		ps.push_back(segs[i].second);
+		rep(j, i) {
+			if (cpSS(segs[i].first, segs[i].second, segs[j].first, segs[j].second) != EX) {
+				ps.push_back(cpLL(segs[i].first, segs[i].second, segs[j].first, segs[j].second));
+			}
+		}
+	}
+	sort(ps.begin(), ps.end());
+	ps.erase(unique(ps.begin(), ps.end()), ps.end());
+
+	int m = ps.size();
+	Graph gr(m);
+	vector<pair<D, int> > list;
+	rep(i, n) {
+		list.clear();
+		rep(j, m) {
+			if (cpSP(segs[i].first, segs[i].second, ps[j]) != EX) {
+				list.push_back(make_pair(norm(segs[i].first - ps[j]), j));
+			}
+		}
+		sort(list.begin(), list.end());
+		rep(j, list.size() - 1) {
+			int a = list[j].second;
+			int b = list[j + 1].second;
+			gr.addEdge(Edge(a, b, abs(ps[a] - ps[b])));
+		}
+	}
+	return gr;
+}
+
+// 可視グラフ（点集合から見える位置へ辺を張ったグラフ）visibilityGraph
+Graph vbg(const VP& ps, const vector<VP>& objs) {
+	int n = ps.size();
+	Graph gr(n);
+	rep(i, n) rep(j, i) {
+		P a = ps[i], b = ps[j];
+		if (!EQ(norm(a - b), 0)) rep(k, objs.size()) {
+			const VP& obj = objs[k];
+			int inStA = incv(a, obj);
+			int inStB = incv(b, obj);
+			if ((inStA ^ inStB) % 2 || inStA * inStB != 1 && incv((a + b)*0.5, obj) == 1) goto skip;
+			rep(l, obj.size()) {
+				P cur = obj[l];
+				P next = obj[(l + 1) % obj.size()];
+				if (cpSS(a, b, cur, next) != EX && cpSP(cur, next, a) == EX && cpSP(cur, next, b) == EX) goto skip;
+			}
+		}
+		gr.addEdge(Edge(i, j, abs(a - b)));
+	skip: {}
+	}
+	return gr;
+}
+
+
+/* その他 */
+
+// 重複する線分を併合する mergeSegments
+vector<L> mgs(vector<L> sg) {
+	int n = sg.size();
+	rep(i, n) if (sg[i].second < sg[i].first) swap(sg[i].second, sg[i].first);
+
+	rep(i, n) rep(j, i) {
+		L &l1 = sg[i], &l2 = sg[j];
+		if (EQ(cs(l1.second - l1.first, l2.second - l2.first), 0)
+			&& cpLP(l1.first, l1.second, l2.first) != EX
+			&& ccw(l1.first, l1.second, l2.second) != 2
+			&& ccw(l2.first, l2.second, l1.second) != 2) {
+			sg[j] = L(min(l1.first, l2.first), max(l1.second, l2.second));
+			sg[i--] = sg[--n];
+			break;
+		}
+	}
+	sg.resize(n);
+	return sg;
+}
+
+
+// 余弦定理
+// △ABC において、a = BC, b = CA, c = AB としたとき
+// a^2 = b^2 + c^2 ? 2bc cos ∠CAB
+
+// ヘロンの公式
+// 3辺の長さがa,b,cである三角形の面積T
+// T = sqrt{ s(s-a)(s-b)(s-c) }, s = (a+b+c)/2
+
+// ピックの定理
+// 多角形の頂点が全て格子点上にあり、内部に穴がないとき
+// S = i + b/2 - 1 (S:多角形の面積, i: 多角形の内部にある格子点の数, b: 辺上の格子点の数)

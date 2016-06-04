@@ -61,7 +61,7 @@ int ccw(P a, P b, P c) {
 	return 0;							//a--c--bで平行 or a == c or b == c
 }
 //線分(a,b)上にcが存在するか isPointOnLine
-bool isPOL(P a, P b, P c) {
+bool ispol(P a, P b, P c) {
 	return abs(a - c) + abs(c - b) < abs(a - b) + EPS;
 }
 
@@ -74,7 +74,7 @@ P cpLP(P a1, P a2, P b) {
 }
 //線分と点の交点取得 CrossPointSegmentPoint
 P cpSP(P a1, P a2, P b) {
-	if (isPOL(a1, a2, b))return b;
+	if (ispol(a1, a2, b))return b;
 	return EX;
 }
 //直線と直線の交点取得 CrossPointLineLine
@@ -88,13 +88,13 @@ P cpLL(P a1, P a2, P b1, P b2) {
 //直線と線分の交点取得 CrossPointLineSegment
 P cpLS(P a1, P a2, P b1, P b2) {
 	P r = cpLL(a1, a2, b1, b2);
-	if (isPOL(b1, b2, r))return r; //線分a1,a2上にrがあるか
+	if (ispol(b1, b2, r))return r; //線分a1,a2上にrがあるか
 	return EX; //交点が線上にない
 }
 //線分と線分の交点取得 CrossPointSegmentSegment
 P cpSS(P a1, P a2, P b1, P b2) {
 	P r = cpLL(a1, a2, b1, b2);
-	if (isPOL(a1, a2, r) && isPOL(b1, b2, r)) return r;
+	if (ispol(a1, a2, r) && ispol(b1, b2, r)) return r;
 	return EX; //交点が線上にない
 }
 

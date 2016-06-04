@@ -517,3 +517,18 @@ vector<L> mgs(vector<L> sg) {
 // ピックの定理
 // 多角形の頂点が全て格子点上にあり、内部に穴がないとき
 // S = i + b/2 - 1 (S:多角形の面積, i: 多角形の内部にある格子点の数, b: 辺上の格子点の数)
+
+// Pをsetに入れる場合
+/*
+	計算誤差によって同じ点が別の点として扱われてしまう
+	for (auto ip : sp) {
+		int cnt = 0;
+		for (auto jp : sp) {
+			if (EQ(ip.X, jp.X) && EQ(ip.Y, jp.Y))cnt++;
+		}
+		if (cnt >= 2) {
+			sp.erase(ip);
+		}
+	}
+	みたいな感じで、消していけばok
+*/

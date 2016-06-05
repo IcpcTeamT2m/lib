@@ -506,6 +506,23 @@ vector<L> mgs(vector<L> sg) {
 }
 
 
+bool compareVP(VP &a, VP &b) {
+	int n = a.size();
+	if (b.size() != n)return false;
+
+	for (int i = 0; i < n; i++) {
+		bool ok = true;
+		for (int j = 0; j < n; j++) {
+			if (a[j] != b[(i + j) % n]) {
+				ok = false;
+			}
+		}
+		if (ok)return true;
+	}
+	return false;
+}
+
+
 // 余弦定理
 // △ABC において、a = BC, b = CA, c = AB としたとき
 // a^2 = b^2 + c^2 ? 2bc cos ∠CAB

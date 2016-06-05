@@ -42,6 +42,15 @@ D cs(P a, P b) {
 D dt(P a, P b) {
 	return (conj(a) * b).X;
 }
+//2直線の直行判定 is_orthogonal
+bool isor(P a1,P a2,P b1,P b2){
+	return EQ(dt(a1-a2,b1-b2),0.0);
+}
+//2直線の平行判定 is_parallel
+bool ispa(P a1,P a2,P b1,P b2){
+	return EQ(cs(a1-a2,b1-b2),0.0);
+}
+
 //点pの直線aへの射影点
 P proj(P a1, P a2, P p) {
 	return a1 + dt(a2 - a1, p - a1) / norm(a2 - a1) * (a2 - a1);

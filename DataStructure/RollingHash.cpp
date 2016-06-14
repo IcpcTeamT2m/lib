@@ -1,5 +1,6 @@
 const ull B = 100000007;
 
+//bにaが含まれているか
 bool contain(string a, string b) {
 	int al = a.size(), bl = b.size();
 	if (al > bl)return false;
@@ -28,3 +29,24 @@ int overlap(string a, string b) {
 	}
 	return ans;
 }
+
+struct RHS {
+	int n;
+	string s;
+	vector<ull> hs; //ハッシュの累積和
+	vector<ull> bp; //bの累乗の結果を記録する(オーバーフローを考慮)
+	const ull b = 1e9 + 7;
+	//初期化
+	RHS(string s) : n(s.size()), s(s), hs(n+1) , bp(n+1){
+		bp[0] = 1;
+		rep(i, n) {
+			bp[i + 1] = bp[i] * b;
+			hs[i + 1] = hs[i] * b + s[i];
+		}
+	}
+	//s[l,r]のハッシュ値を返す
+	ull subhash(int l, int r) {
+		return hs[r+1] - hs[l] * bp[r+1 - l];
+	}
+};
+
